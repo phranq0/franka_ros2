@@ -1,0 +1,6 @@
+franka_interfaces/Array1D[6] pose
+franka_interfaces/Array1D[6] velocity
+float64 time
+---
+bool success
+string error
