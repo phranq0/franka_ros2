@@ -18,6 +18,8 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # find dependencies
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+
 find_package(ament_cmake REQUIRED)
 find_package(franka_interfaces REQUIRED)
 find_package(lifecycle_msgs REQUIRED)
@@ -27,6 +29,7 @@ find_package(std_msgs REQUIRED)
 
 find_package(Eigen3 REQUIRED)
 find_package(Franka 0.8.0 REQUIRED)
+find_package(Threads REQUIRED)
 
 include_directories(
   include
@@ -34,7 +37,11 @@ include_directories(
 
 # add libraries
 add_library(motion_generator STATIC
-  src/MOtionGenerator.cpp
+  src/MotionGenerator.cpp
+)
+
+add_library(robot_controller STATIC
+  src/RobotController.cpp
 )
 
 add_library(motion_control_server STATIC
@@ -43,11 +50,13 @@ add_library(motion_control_server STATIC
 
 # add dependencies
 target_link_libraries(motion_generator PUBLIC Eigen3::Eigen3 Franka::Franka)
+target_link_libraries(robot_controller PUBLIC Eigen3::Eigen3 Franka::Franka)
 target_link_libraries(motion_control_server 
   motion_generator
+  robot_controller
   Franka::Franka
+  Threads::Threads
 )
-
 
 ament_target_dependencies(motion_control_server
   "franka_interfaces"
