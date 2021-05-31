@@ -1,4 +1,4 @@
-# Copyright (c) 2020 wngfra
+    # Copyright (c) 2020 wngfra
 # Use of this source code is governed by the Apache-2.0 license, see LICENSE
 
 ARG FROM_IMAGE=ubuntu:latest
@@ -44,7 +44,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip3 install -U\
     argcomplete \
-    colcon-common-extensions
+    colcon-common-extensions \
+    pytest-rerunfailures
 
 # Download, build and install libfranka
 RUN git clone --recursive https://github.com/frankaemika/libfranka.git /usr/src/libfranka
